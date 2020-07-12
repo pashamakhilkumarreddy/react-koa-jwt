@@ -1,13 +1,13 @@
 const Router = require('koa-router');
 
+const {
+  login,
+  register,
+} = require('../controllers');
+
 const router = new Router();
 
-router.get('/', (ctx) => {
-  ctx.response.status = 200;
-  ctx.body = {
-    error: false,
-    status: 200,
-  };
-});
+router.post('/register', register);
+router.post('/login', login);
 
 module.exports = router;

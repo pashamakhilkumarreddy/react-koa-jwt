@@ -22,7 +22,9 @@ app.use(responseTime({
   hrtime: true,
 }));
 
-const { PORT } = server;
+const {
+  PORT,
+} = server;
 
 require('./routes')({
   app,
