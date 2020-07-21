@@ -32,26 +32,17 @@ const UserSchema = new Schema({
   },
   username: {
     type: String,
-    required: [true, 'Username is required'],
+    required: [true, 'Username is required!'],
     lowercase: true,
     unique: true,
     index: true,
     trim: true,
     minlength: [8, 'Username is too short!'],
     maxlength: [100, 'Username is too long!'],
-    validate: {
-      validator(val) {
-        const regex = /^/;
-        return regex.test(val);
-      },
-      message: ({
-        value,
-      }) => `${value} is not a valid username`,
-    },
   },
   email: {
     type: String,
-    required: [true, 'Email is required'],
+    required: [true, 'Email is required!'],
     lowercase: true,
     unique: true,
     index: true,
@@ -73,8 +64,6 @@ const UserSchema = new Schema({
     type: String,
     required: [true, 'Password is required'],
     lowercase: true,
-    unique: true,
-    index: true,
     trim: true,
     minlength: [10, 'Password can\'t be this short!'],
   },
@@ -86,6 +75,7 @@ const UserSchema = new Schema({
   },
   gender: {
     type: String,
+    lowercase: true,
     enum: ['female', 'male'],
     default: 'female',
   },
