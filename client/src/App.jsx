@@ -1,16 +1,24 @@
 import React from 'react';
-import { Button } from 'antd';
+import {Layout} from 'antd';
 
-import Routes from './routes';
-import Header from './components/common/Header';
-import Footer from './components/common/Footer';
+import Routes from './routes/';
+import AppHeader from './components/common/Header';
+import AppFooter from './components/common/Footer';
 
-function App() {
+const { Header, Footer, Content } = Layout;
+
+const App = () => {
   return (
     <>
-      <Header />
-      <Routes />
-      <Footer />
+      <Header>
+        <AppHeader />
+      </Header>
+      <Content>
+        <Routes />
+      </Content>
+      <Footer>
+        <AppFooter />
+      </Footer>
     </>
   );
 }

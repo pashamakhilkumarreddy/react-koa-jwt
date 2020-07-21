@@ -1,8 +1,10 @@
-.footer {
+footer {
+  font-family: 'InterExtraBold';
+  font-size: 1.1rem !important;
   position: absolute;
   bottom: 0;
   width: 100vw;
   border-top: 1px solid #ddd;
-  background: #fefefe;
-  padding: 1rem 1rem 0;    
+  background: #fefefe !important;
+  padding: 1rem 1rem 0 !important;    
 }

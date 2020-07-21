@@ -1,5 +1,12 @@
-.header {
+header {
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.6);
   display: flex;
   justify-content: space-between;
+  background: transparent !important;
+}
+
+header ul {
+  display: flex;
+  justify-content: space-between; 
+  width: 100vw;
 }

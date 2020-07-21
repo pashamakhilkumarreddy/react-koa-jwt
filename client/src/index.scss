@@ -52,6 +52,8 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  position: relative;
+  min-height: 100vh;
 }
 
 .flex-center {
@@ -63,4 +65,8 @@ body {
 
 .text-center {
   text-align: center;
+}
+
+.mt-6 {
+  margin-top: 3rem;
 }
