@@ -4,10 +4,13 @@ const {
   login,
   register,
 } = require('../controllers');
+const {
+  validateAuthFields,
+} = require('../middlewares/checkAuthFields');
 
 const router = new Router();
 
-router.post('/register', register);
-router.post('/login', login);
+router.post('/register', validateAuthFields, register)
+  .post('/login', validateAuthFields, login);
 
 module.exports = router;

@@ -1,19 +1,53 @@
+const {
+  User,
+} = require('../models');
+const {
+  genUniqUsername,
+} = require('../utils/helpers');
+
 module.exports = {
-  async login(ctx) {
+  async register(ctx) {
     try {
-      ctx.response.status = 200;
-      ctx.body = {
-        error: false,
-        status: 200,
-        statusMessages: [
-          'Successfully logged In!',
-        ],
-      };
+      const {
+        email,
+        password,
+      } = ctx.request.body;
+      const user = await User.findOne({
+        email,
+      });
+      if (user) {
+        ctx.response.status = 400;
+        ctx.body = {
+          success: false,
+          status: 400,
+          statusMessages: [
+            'A user already exists with the given email address. Please try logging in',
+          ],
+        };
+        return;
+      }
+      const username = genUniqUsername();
+      const newUser = await new User({
+        email,
+        username,
+        password,
+      }).save();
+      if (newUser) {
+        ctx.response.status = 201;
+        ctx.body = {
+          success: true,
+          status: 201,
+          statusMessages: [
+            'Successfully created a new user',
+          ],
+        };
+        return;
+      }
     } catch (err) {
       console.error(err);
       ctx.response.status = 500;
       ctx.body = {
-        error: true,
+        success: false,
         status: 500,
         statusMessages: [
           'Internal server error',
@@ -21,21 +55,54 @@ module.exports = {
       };
     }
   },
-  async register(ctx) {
+  async login(ctx) {
     try {
-      ctx.response.status = 201;
+      const {
+        email,
+        password,
+      } = ctx.request.body;
+      const user = await User.findOne({
+        email,
+      });
+      if (!user) {
+        ctx.response.status = 404;
+        ctx.body = {
+          success: false,
+          status: 404,
+          statusMessages: [
+            'Unable to find the user with the given email',
+          ],
+        };
+        return;
+      }
+      const isValidPassword = await user.comparePassword(password);
+      if (isValidPassword) {
+        ctx.response.status = 200;
+        ctx.body = {
+          success: true,
+          status: 200,
+          refreshToken: user.genRefreshToken(),
+          accessToken: user.genAccessToken(),
+          user: user.formattedUserObj(),
+          statusMessages: [
+            'Successfully logged In!',
+          ],
+        };
+        return;
+      }
+      ctx.response.status = 401;
       ctx.body = {
-        error: false,
-        status: 201,
+        success: true,
+        status: 401,
         statusMessages: [
-          'Successfully created a new user',
+          'Invalid password',
         ],
       };
     } catch (err) {
       console.error(err);
       ctx.response.status = 500;
       ctx.body = {
-        error: true,
+        success: false,
         status: 500,
         statusMessages: [
           'Internal server error',

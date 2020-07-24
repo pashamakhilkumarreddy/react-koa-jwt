@@ -12,7 +12,7 @@ module.exports = {
     DB_PASSWORD: process.env.DB_PASSWORD || 'test',
   },
   jwt: {
-    JWT_SECRET: process.env.JWT_SECRET || '',
+    JWT_SECRET: process.env.JWT_SECRET || 'qlP3vEztkRs6k2knoi3flveUk8uFtQjXo9lDms9TAX0=',
     JWT_REFRESH_TOKEN_EXPIRY: process.env.JWT_REFRESH_TOKEN_EXPIRY || '90d',
     JWT_ACCESS_TOKEN_EXPIRY: process.env.JWT_REFRESH_TOKEN_EXPIRY || '30m',
     JWT_ISSUER: process.env.JWT_ISSUER || 'johndoe',

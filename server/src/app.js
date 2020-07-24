@@ -14,7 +14,7 @@ const {
 const {
   getMONGOURI,
   connectToDB,
-} = require('./helpers');
+} = require('./utils');
 
 const app = new Koa();
 const db = new Map();

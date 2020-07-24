@@ -6,9 +6,6 @@ const bcrypt = require('bcryptjs');
 const {
   sign,
 } = require('jsonwebtoken');
-const {
-  v4: uuidv4,
-} = require('uuid');
 
 const {
   jwt,
@@ -63,8 +60,6 @@ const UserSchema = new Schema({
   password: {
     type: String,
     required: [true, 'Password is required'],
-    lowercase: true,
-    trim: true,
     minlength: [10, 'Password can\'t be this short!'],
   },
   mobile: {
@@ -109,7 +104,8 @@ const UserSchema = new Schema({
 UserSchema.pre('save', async function hashPassword(next) {
   try {
     if (this.isModified('password') || this.isNew) {
-      const hashedPassword = await bcrypt.hash(this.password, 12);
+      const saltRounds = 12;
+      const hashedPassword = await bcrypt.hash(this.password, saltRounds);
       this.password = hashedPassword;
       return next();
     }
@@ -122,14 +118,15 @@ UserSchema.pre('save', async function hashPassword(next) {
 
 UserSchema.methods.comparePassword = async function comparePassword(password) {
   try {
-    return await bcrypt.compare(password, this.password);
+    const isPasswordValid = await bcrypt.compare(password, this.password);
+    return isPasswordValid;
   } catch (err) {
     console.error(err);
     throw err;
   }
 };
 
-UserSchema.methods.createRefreshToken = async function createRefreshToken() {
+UserSchema.methods.genRefreshToken = function genRefreshToken() {
   try {
     const payload = {
       id: this._id,
@@ -149,7 +146,7 @@ UserSchema.methods.createRefreshToken = async function createRefreshToken() {
   }
 };
 
-UserSchema.methods.createAccessToken = async function createAccessToken() {
+UserSchema.methods.genAccessToken = function genAccessToken() {
   try {
     const payload = {
       id: this._id,
@@ -178,6 +175,8 @@ UserSchema.methods.formattedUserObj = function formattedUserObj() {
     password,
     isUserArchived,
     isUserVerified,
+    createdAt,
+    updatedAt,
     __v,
     ...rest
   } = obj;
@@ -185,11 +184,6 @@ UserSchema.methods.formattedUserObj = function formattedUserObj() {
     ...rest,
   };
   return formattedObj;
-};
-
-UserSchema.methods.genUniqUsername = function genUniqUsername() {
-  const username = uuidv4();
-  return username;
 };
 
 module.exports = mongoose.model('User', UserSchema);
