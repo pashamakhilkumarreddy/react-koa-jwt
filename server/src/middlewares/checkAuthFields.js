@@ -32,8 +32,8 @@ module.exports = {
         };
         return;
       }
-      const emailValidation = isValidEmail(email);
-      const passwordValidation = isValidPassword(password);
+      const emailValidation = isValidEmail(email.trim());
+      const passwordValidation = isValidPassword(password.trim());
       if (!emailValidation.isValid) {
         errors.push(emailValidation.message);
       }

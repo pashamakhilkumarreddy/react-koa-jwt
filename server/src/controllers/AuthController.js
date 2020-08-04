@@ -21,7 +21,7 @@ module.exports = {
           success: false,
           status: 400,
           statusMessages: [
-            'A user already exists with the given email address. Please try logging in',
+            'A user already exists with the given email address. Please login!',
           ],
         };
         return;
@@ -43,6 +43,7 @@ module.exports = {
         };
         return;
       }
+      throw new Error('Unable to create a new user!');
     } catch (err) {
       console.error(err);
       ctx.response.status = 500;
